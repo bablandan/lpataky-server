@@ -6,6 +6,8 @@ import ch.uzh.ifi.hase.soprafs26.constant.UserStatus;
 
 import java.io.Serializable;
 
+import java.time.LocalDate;
+
 /**
  * Internal User Representation
  * This class composes the internal representation of the user and defines how
@@ -37,6 +39,15 @@ public class User implements Serializable {
 
 	@Column(nullable = false)
 	private UserStatus status;
+
+	@Column(nullable = false, length = 50)
+	private String bio;
+
+	@Column(nullable = false, length = 30)
+	private String password;
+
+	@Column(nullable = false, updatable = false)
+	private LocalDate creationDate;
 
 	public Long getId() {
 		return id;
@@ -76,5 +87,29 @@ public class User implements Serializable {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+
+	public void setBio(String bio){
+		this.bio = bio;
+	}
+
+	public String getBio(){
+		return bio;
+	}
+
+	public void setPassword(String password){
+		this.password = password;
+	}
+
+	public String getPassword(){
+		return password;
+	}
+
+	public LocalDate getCreationDate() {
+  		return creationDate;
+	}
+
+	public void setCreationDate(LocalDate creationDate) {
+ 		this.creationDate = creationDate;
 	}
 }
