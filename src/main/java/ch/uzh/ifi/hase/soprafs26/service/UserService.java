@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ch.uzh.ifi.hase.soprafs26.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs26.entity.User;
 import ch.uzh.ifi.hase.soprafs26.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs26.rest.dto.PasswordChangeDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -121,8 +122,7 @@ public class UserService {
 		return user;
 	}
 
-
-
+	//Method to logout a user
 	public void logoutUser(String token) {
 		if (token == null || token.isBlank()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -144,11 +144,32 @@ public class UserService {
 		log.debug("User logged out: {}", user);
 	}
 	
+	//Method to change password
+	public void changePassword(String token, PasswordChangeDTO dto) {
 
+		if (token == null || token.isBlank()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+			"Token is blank");
+		}
+
+		User user = userRepository.findByToken(token);
+		if (user == null){
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+		}
+
+		if (dto.getNewPassword() == null || dto.getNewPassword().isBlank()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+			"New password is blank"
+			);
+		}
+
+		user.setPassword(dto.getNewPassword());
+		userRepository.save(user);
+		userRepository.flush();
+		log.debug("Password updated: {}", user);
+
+		logoutUser(token);
+	}
 	
 	
-
-	
-
-
 }
