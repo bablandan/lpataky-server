@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs26.rest.dto;
 
-public class PasswordChangeDTO {
+public class UserPutDTO {
     private String newPassword;
 
     public String getNewPassword() {

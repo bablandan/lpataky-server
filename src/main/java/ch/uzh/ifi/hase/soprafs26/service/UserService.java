@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ch.uzh.ifi.hase.soprafs26.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs26.entity.User;
 import ch.uzh.ifi.hase.soprafs26.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs26.rest.dto.PasswordChangeDTO;
+import ch.uzh.ifi.hase.soprafs26.rest.dto.UserPutDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -145,16 +145,25 @@ public class UserService {
 	}
 	
 	//Method to change password
-	public void changePassword(String token, PasswordChangeDTO dto) {
+	public void updateUser(Long userid, String token, UserPutDTO dto) {
 
-		if (token == null || token.isBlank()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-			"Token is blank");
+		User target = userRepository.findById(userid).orElse(null);
+		
+		if (target == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
 
-		User user = userRepository.findByToken(token);
-		if (user == null){
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+		if (token == null || token.isBlank()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+		}
+
+		User authUser = userRepository.findByToken(token);
+		if (authUser == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		}
+
+		if (!authUser.getId().equals(userid)){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
 
 		if (dto.getNewPassword() == null || dto.getNewPassword().isBlank()) {
@@ -163,13 +172,12 @@ public class UserService {
 			);
 		}
 
-		user.setPassword(dto.getNewPassword());
-		userRepository.save(user);
+		target.setPassword(dto.getNewPassword());
+		userRepository.save(target);
 		userRepository.flush();
-		log.debug("Password updated: {}", user);
+		log.debug("Password updated: {}", target);
 
 		logoutUser(token);
 	}
-	
-	
+
 }

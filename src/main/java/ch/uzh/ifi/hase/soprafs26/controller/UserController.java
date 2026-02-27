@@ -7,7 +7,7 @@ import ch.uzh.ifi.hase.soprafs26.entity.User;
 import ch.uzh.ifi.hase.soprafs26.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs26.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs26.rest.dto.UserLoginPostDTO;
-import ch.uzh.ifi.hase.soprafs26.rest.dto.PasswordChangeDTO;
+import ch.uzh.ifi.hase.soprafs26.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs26.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs26.service.UserService;
 
@@ -77,10 +77,12 @@ public class UserController {
 	}
 
 
-	@PutMapping("/change-password")
+	@PutMapping("/users/{userid}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void changePassword(@RequestHeader("Authorization") String token, 
-	@RequestBody PasswordChangeDTO passwordChangeDTO){
-		userService.changePassword(token, passwordChangeDTO);
+	public void updateUser(
+		@PathVariable("userid") Long userid,
+		@RequestHeader("Authorization") String token, 
+		@RequestBody UserPutDTO userPutDTO){
+		userService.updateUser(userid, token, userPutDTO);
 	}
 }
