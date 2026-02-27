@@ -77,8 +77,7 @@ public class UserController {
 	}
 
 
-
-	@PutMapping("/users/password")
+	@PutMapping("/change-password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void changePassword(@RequestHeader("Authorization") String token, 
 	@RequestBody PasswordChangeDTO passwordChangeDTO){
