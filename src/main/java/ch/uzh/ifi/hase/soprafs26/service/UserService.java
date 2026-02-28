@@ -180,4 +180,13 @@ public class UserService {
 		logoutUser(token);
 	}
 
+	public User getUser(Long userid) {
+		User target = userRepository.findById(userid).orElse(null);
+
+		if (target == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		}
+		return target;
+	}
+
 }
