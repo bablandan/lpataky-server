@@ -93,4 +93,13 @@ public class UserController {
 		User user = userService.getUser(userid);
 		return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
 	}
+
+
+	@GetMapping(value = "/users", params = "userId")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public UserGetDTO getUserByQuery(@RequestParam Long userId) {
+    	User user = userService.getUser(userId);
+    	return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+	}
 }
