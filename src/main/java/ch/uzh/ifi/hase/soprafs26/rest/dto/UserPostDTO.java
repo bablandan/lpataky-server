@@ -3,11 +3,8 @@ package ch.uzh.ifi.hase.soprafs26.rest.dto;
 public class UserPostDTO {
 
 	private String name;
-
 	private String username;
-
 	private String password;
-
 	private String bio;
 
 	public String getName() {

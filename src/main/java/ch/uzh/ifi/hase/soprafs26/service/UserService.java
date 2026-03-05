@@ -85,7 +85,6 @@ public class UserService {
 		} 
 	}
 
-
 	//Method to login an existing user
 	public User loginUser(String username, String password){
 		
@@ -139,6 +138,9 @@ public class UserService {
 		//Successful logout
 		user.setStatus(UserStatus.OFFLINE);
 
+		//Change token
+		user.setToken(UUID.randomUUID().toString());
+
 		userRepository.save(user);
 		userRepository.flush();
 		log.debug("User logged out: {}", user);
@@ -189,4 +191,19 @@ public class UserService {
 		return target;
 	}
 
+	public void assertValidToken(String token) {
+		if (token == null || token.isBlank()){
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is missing");
+		}
+
+		User user = userRepository.findByToken(token);
+
+		if (user == null){
+			throw new ResponseStatusException((HttpStatus.UNAUTHORIZED), "No valid token");
+		}
+
+		if (user.getStatus() != UserStatus.ONLINE) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not online");
+		} 
+	}
 }

@@ -4,13 +4,14 @@ import ch.uzh.ifi.hase.soprafs26.constant.UserStatus;
 
 import java.time.LocalDate;
 
-public class UserGetDTO {
+public class UserAuthDTO {
 
 	private Long id;
 	private String name;
 	private String username;
 	private UserStatus status;
 	private String bio;
+    private String token;
 	private LocalDate creationDate;
 
 
@@ -53,6 +54,14 @@ public class UserGetDTO {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
+
+    public String getToken(){
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
 	public LocalDate getCreationDate() {
 		return creationDate;
