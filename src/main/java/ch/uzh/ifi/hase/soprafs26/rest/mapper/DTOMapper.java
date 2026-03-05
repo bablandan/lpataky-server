@@ -51,4 +51,6 @@ public interface DTOMapper {
   	@Mapping(source = "token", target = "token")
  	@Mapping(source = "creationDate", target = "creationDate")
 	UserAuthDTO convertEntityToUserAuthDTO(User user);
+
+	//Two different mappers UserGetDTO and UserAuthDTO used due to two different DTOs
 }

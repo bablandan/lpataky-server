@@ -182,6 +182,7 @@ public class UserService {
 		logoutUser(token);
 	}
 
+	//Method to get user based on userid
 	public User getUser(Long userid) {
 		User target = userRepository.findById(userid).orElse(null);
 
@@ -191,6 +192,7 @@ public class UserService {
 		return target;
 	}
 
+	//Helper method to validate token
 	public void assertValidToken(String token) {
 		if (token == null || token.isBlank()){
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token is missing");
